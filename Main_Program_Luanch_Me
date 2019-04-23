@@ -1,0 +1,109 @@
+import ddf.minim.spi.*;
+import ddf.minim.signals.*;
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.ugens.*;
+import ddf.minim.effects.*;
+
+//--------------------------------------------------------------------//
+// File name: Flappy_Bird_Final_Game_Omri                             //
+// Date: 2017-1-12                                                    //
+// Programmers: Omri Daniel                                           //
+// Description: This is our final game for grade 10 computer science. //
+//              The game I chose to re-make is flappy bird, in flappy //
+//              bird you try to get the highest score. It is fun to   //
+//              play but very hard to master. Good Luck :)            //        
+// Instructions: Complete the tasks shown below and submit to Moodle. //
+//               Press the mouse to flap and avoid the pipes          //
+//--------------------------------------------------------------------//
+
+//Sounds
+Minim minim;
+AudioSample wing;
+AudioSample point;
+AudioSample hit;
+AudioPlayer song;
+//Bird Variables
+float birdY=300;
+float vel=2;
+//Pipe Variables
+float xPos[] =new float [100];
+float yPos[] =new float [100];
+float opening[]=new float[100]; 
+boolean cashed = false;
+//Flap Sprite
+PImage[] images=new PImage[4]; //current image
+float currentF=1; //current frame
+//Background Move
+PImage img1; //background pic1
+PImage img2; //background pic2
+int backX = width/2;
+int backY= height+450;
+int backX1=width/2+350;
+int backY1=height+450;
+//int bgdSpeed = 3; //moving speed
+//Other Variables
+int score=0;
+int highScore;
+PImage bird1;
+boolean game=false;
+PImage pipe1;
+PImage pipe2;
+
+void setup() {
+  size(700, 900);
+  intro();
+  imageMode(CORNER);
+  smooth();
+  bird1 = loadImage("bird1.png");
+  //Load Pipes
+  pipe1 = loadImage("pipe1.png");
+  pipe2 = loadImage("pipe2.png");
+  for (int i = 0; i<100; i++) {
+    xPos[i] = 400+(i*220);
+    opening[i] = random(540)+100;
+  }
+  //Sounds
+  minim = new Minim(this);
+  hit = minim.loadSample("hit.mp3"); //Sound effect
+  wing = minim.loadSample("wing.mp3"); //Sound effect
+  point = minim.loadSample("point.mp3"); //Sound effect
+  song = minim.loadFile("song.mp3"); //song
+  //Flap
+  for (int i=1; i<=3; i++) {
+    String imageF="bird"+(i)+".png";
+    images[i]=loadImage(imageF);
+  }
+  //backMove
+  img1 = loadImage("back.bmp"); 
+  img2 = loadImage("back.bmp"); 
+  // img1W = img1.width;
+  //img2X=img1W;
+  //img2W = img2.width;
+}
+
+void draw() {
+  //Game Setup
+  if (keyPressed && game==false) {
+    game=true;
+    score=0;
+    birdY=300;
+    vel=2;
+    for (int i = 0; i<100; i++) {
+      xPos[i] = 400+(i*220);
+      opening[i] = random(540)+100;
+    }
+  }
+  //During Game
+  if (game==true) {
+    song();
+    moveBird(); 
+    backMove(); 
+    checkPosition();
+    drawPillar();
+    score();
+    checkCollisions();
+    flap();
+  }
+}
+
