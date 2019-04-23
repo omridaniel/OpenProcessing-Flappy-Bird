@@ -23,21 +23,17 @@ AudioSample wing;
 AudioSample point;
 AudioSample hit;
 AudioPlayer song;
-
 //Bird Variables
 float birdY=300;
 float vel=2;
-
 //Pipe Variables
 float xPos[] =new float [100];
 float yPos[] =new float [100];
 float opening[]=new float[100]; 
 boolean cashed = false;
-
 //Flap Sprite
 PImage[] images=new PImage[4]; //current image
 float currentF=1; //current frame
-
 //Background Move
 PImage img1; //background pic1
 PImage img2; //background pic2
@@ -45,9 +41,7 @@ int backX = width/2;
 int backY= height+450;
 int backX1=width/2+350;
 int backY1=height+450;
-
 //int bgdSpeed = 3; //moving speed
-
 //Other Variables
 int score=0;
 int highScore;
@@ -55,15 +49,12 @@ PImage bird1;
 boolean game=false;
 PImage pipe1;
 PImage pipe2;
-int start;
-int timer; 
 
 void setup() {
   size(700, 900);
   intro();
   imageMode(CORNER);
   smooth();
-  start=millis();
   bird1 = loadImage("bird1.png");
   //Load Pipes
   pipe1 = loadImage("pipe1.png");
@@ -98,8 +89,6 @@ void draw() {
     score=0;
     birdY=300;
     vel=2;
-    timer=0;  
-    start=0;
     for (int i = 0; i<100; i++) {
       xPos[i] = 400+(i*220);
       opening[i] = random(540)+100;
@@ -115,8 +104,6 @@ void draw() {
     score();
     checkCollisions();
     flap();
-    timer=(millis()-start)/100;
-    text("Time:"+timer, 300, 50);
   }
 }
 
